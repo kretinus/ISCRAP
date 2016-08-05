@@ -1,0 +1,44 @@
+<img class="aligncenter" src="http://149.202.172.22/wp-content/uploads/{{imdbID}}.jpg" />
+<h3><strong>{{description}}</strong></h3>
+
+{{#if trailer}}
+https://www.youtube.com/watch?v={{trailer}}
+{{/if}}
+
+<a href="https://yts.ag/browse-movies/{{MovieName}}"><img class="aligncenter" src="http://149.202.172.22/wp-content/uploads/2016/07/torrent_search.png"></a>
+<a href="http://www.imdb.com/title/tt{{imdbID}}"><img class="aligncenter" src="http://149.202.172.22/wp-content/uploads/2016/07/IMDB_Logo_2016.svg_.png" width="130" height="64" /></a>
+
+{{#if director}}<strong>Director: </strong>{{director}}{{/if}}
+
+{{#if actors}}<strong>Actors: </strong>{{actors}}{{/if}}
+
+{{#if genres}}<strong>Genres: </strong>{{genres}}{{/if}}
+
+
+<table>
+<tbody>
+<tr>
+<td><strong>Release Name</strong></td>
+<td><strong>Language</strong></td>
+<td><strong>Format</strong></td>
+<td><strong>Download</strong></td>
+</tr>
+
+
+{{#each subtitles}}
+{{#if_eq this.ISO639 ../lang }}
+<tr>
+<td>{{#if this.MovieReleaseName}}{{this.MovieReleaseName}}{{else}}{{this.MovieName}}{{/if}}</td> 
+<td>{{this.ISO639}}</td>
+<td>{{this.SubFormat}}</td>
+<td><a href="/advertisement-page?dllid={{this._id}}">Download</a></td>
+</tr>
+{{else}}
+{{/if_eq}}
+{{/each}}
+
+</tbody>
+</table>
+
+{{#if akas}}<b>This movie is also known as: </b>{{akas}}{{/if}}
+
