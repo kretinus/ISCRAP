@@ -1,5 +1,4 @@
 var config = require('./config.js')
-	//, downloader = require('./modules/subtitlesDownloader.js')
 	, zipUploader = require('./modules/zipUploader.js')
 	, populater = require('./modules/movieCollectionPopulater.js')
 	, WPposter = require('./modules/wpPoster.js')
@@ -24,24 +23,9 @@ function finished(err) {
 	process.exit();
 }
 
-
-		  
-// db.findSubTitlesToDownloadToHandleManualy(function(err, doc){
-	// if (err) console.log(err);
-	// else {
-	// db.saveSubtitlesWithError(doc, function(err) {
-            // if(err) {
-              // console.log("Error while saving subtitles with error to error collection");
-              // doc.error = err;
-            // } else
-              // return db.removeSubTitlesToDownload(doc, finished);
-          // });
-	// };
-	
-// });
 main();
 function main(){
-if (count == 300) finished();
+if (count == 1) finished();
 
 	db.cleanInstanceBackList(function(err, data){
 		if (err){
