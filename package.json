@@ -1,15 +1,16 @@
 {
   "name": "iScrap",
-  "version": "1.0.0",
+  "version": "0.8.0",
   "description": "Subtitle scraper and publisher - Academic projet - HEIG-VD 2016",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: No test\" && exit 1"
 
   },
   "author": "Nicolas Scheuner",
   "license": "ISC",
   "dependencies": {
+    "aws-bluebird":"1.0.0",
     "csvtojson": "0.5.14",
     "fs-finder": "1.8.1",
     "handlebars": "4.0.5",
