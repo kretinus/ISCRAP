@@ -1,3 +1,4 @@
+/** @module Zip Uploader Module*/
 var db = require('../lib/db.js'),
     config = require('../config.js'),
     fs = require('fs'),
@@ -8,6 +9,12 @@ var db = require('../lib/db.js'),
 var downloadFolder = config.batch.downloadFolder;
 
 
+/**
+ * Description
+ * @method process
+ * @param {} callback
+ * @return 
+ */
 function process(callback) {
     var filesFullNameList = Finder.from('./' + downloadFolder).findFiles();
     uploadSubtitles(0, callback);
@@ -15,8 +22,10 @@ function process(callback) {
     /**
      * Upload subtitles ZIP file
      * Recursive function
+     * @method uploadSubtitles
      * @param index (index to parse the subtitles list)
      * @param callback to call once all subtitles have been uploaded
+     * @return 
      */
     function uploadSubtitles(index, callback) {
 
@@ -34,6 +43,8 @@ function process(callback) {
 
         /**
          * Process next ZIP
+         * @method next
+         * @return 
          */
         function next() {
             console.log("---------------------------------");
@@ -45,6 +56,9 @@ function process(callback) {
         /**
          * Callback on upload finished
          * delets the file on disk if succefully stored in DB
+         * @method onZipUploaded
+         * @param {} error
+         * @return 
          */
         function onZipUploaded(error) {
             if (error) {
@@ -81,6 +95,12 @@ function process(callback) {
  */
 
 module.exports = {
+    /**
+     * Upload zip to subtitle in mongo
+     * @method ZipUpload
+     * @param {} callback
+     * @return 
+     */
     ZipUpload: function(callback) {
 
         process(function(err) {
