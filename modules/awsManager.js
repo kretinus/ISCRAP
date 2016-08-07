@@ -1,3 +1,4 @@
+/** @module AWS Manger Module*/
 var aws = require('aws-bluebird')
 	, db = require('../lib/db.js')
 	, config = require('../config.js')
