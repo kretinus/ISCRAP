@@ -18,16 +18,19 @@ var WPclient = wordpress.createClient({
 /**
  * Download subtitle
  * Recursive function
+ * @method populateMovieCollection
  * @param list (a list of subtitle to download)
  * @param index (index of subtitle in the list)
  * @param callback to call once all subtitles has been Downloaded
+ * @return 
  */
-
 function populateMovieCollection(list, index, callback) {
     var doc = list[index];
 
     /**
      * Get next subtitles in the list
+     * @method next
+     * @return 
      */
     function next() {
         console.log("---------------------------------");
@@ -37,6 +40,9 @@ function populateMovieCollection(list, index, callback) {
 
     /**
      * Callback on scrapping finished
+     * @method onMoviePopulated
+     * @param {} error
+     * @return 
      */
     function onMoviePopulated(error) {
         var id = doc._id;
@@ -87,6 +93,12 @@ function populateMovieCollection(list, index, callback) {
      */
     descriptionScrapper(0)
 
+    /**
+     * Scrap description for all subtitles lang from opensubtitles.org
+     * @method descriptionScrapper
+     * @param {} i
+     * @return 
+     */
     function descriptionScrapper(i) {
         db.findSubTitlesByImDBid(doc._id, (function(err, docs) {
             if (err) console.log(err);
@@ -119,6 +131,8 @@ function populateMovieCollection(list, index, callback) {
 
     /**
      * Scrap AKA (AlsoKnownAs) from IMDB
+     * @method akaScrapper
+     * @return 
      */
     function akaScrapper() {
         x('http://www.imdb.com/title/tt0' + doc._id + '/releaseinfo', '.spEven2Col', ['td:nth-child(2)'])
@@ -142,6 +156,8 @@ function populateMovieCollection(list, index, callback) {
 
     /**
      * Scrap the film Director (only the first if many) from IMDB
+     * @method directorScrapper
+     * @return 
      */
     function directorScrapper() {
         x('http://www.imdb.com/title/tt0' + doc._id, '.plot_summary', [{
@@ -169,6 +185,8 @@ function populateMovieCollection(list, index, callback) {
 
     /**
      * Scrap the main actors from IMDB
+     * @method actorsScrapper
+     * @return 
      */
     function actorsScrapper() {
         x('http://www.imdb.com/title/tt0' + doc._id, '.credit_summary_item', ['.itemprop, span[itemprop="actors"]'])
@@ -207,6 +225,8 @@ function populateMovieCollection(list, index, callback) {
 
     /**
      * Scrap the movie genres from IMDB
+     * @method genreScrapper
+     * @return 
      */
     function genreScrapper() {
         x('http://www.imdb.com/title/tt0' + doc._id, '.title_wrapper', ['span[itemprop="genre"]'])
@@ -229,8 +249,10 @@ function populateMovieCollection(list, index, callback) {
     }
 
     /**
-     *Retrieve a youtube video ID for search term "trailer + moviename + movieyear"
-     *using youtube v3api
+     * Retrieve a youtube video ID for search term "trailer + moviename + movieyear"
+     * using youtube v3api
+     * @method getYoutubeTrailer
+     * @return 
      */
     function getYoutubeTrailer() {
         var url = config.populate.youtubeUrl + doc.movieName + "+" + doc.movieYear + "&key=" + config.populate.youtubeAPIkey;
@@ -258,6 +280,8 @@ function populateMovieCollection(list, index, callback) {
      * Scrap video trailer from imdb
      * if notice -> no trailer
      * not in use since youtube is more accurate
+     * @method ImdbtrailerScrapper
+     * @return 
      */
     function ImdbtrailerScrapper() {
         x('http://www.imdb.com/title/tt0' + doc._id + '/videogallery', '#video_gallery_content', {
@@ -283,6 +307,8 @@ function populateMovieCollection(list, index, callback) {
     /**
      * Scrap the movie image from IMDB with maxwith 1000px to avoid huge film
      * Then "post" the image to wordpress media.
+     * @method imageScrapper
+     * @return 
      */
     function imageScrapper() {
         x('http://www.imdb.com/title/tt0' + doc._id, '.poster', {
@@ -311,6 +337,13 @@ function populateMovieCollection(list, index, callback) {
                             var imgToUpload = fs.readFileSync('./img/' + doc._id + '.jpg');
                             imgUpload(doc, imgToUpload);
 
+                            /**
+                             * Description
+                             * @method imgUpload
+                             * @param {} doc
+                             * @param {} imgToUpload
+                             * @return 
+                             */
                             function imgUpload(doc, imgToUpload) {
                                 WPclient.uploadFile({
                                     name: doc._id + ".jpg",
@@ -339,6 +372,13 @@ function populateMovieCollection(list, index, callback) {
 
 // --| export
 module.exports = {
+    /**
+     * Description
+     * @method Populate
+     * @param {} batchSize
+     * @param {} callback
+     * @return 
+     */
     Populate: function(batchSize, callback) {
         db.findMoviesToPopulate(batchSize, function(err, list) {
             if (err) return callback(err);
