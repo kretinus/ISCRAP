@@ -8,7 +8,6 @@ var wp = new WP({
     endpoint: 'http://149.202.172.22/wp-json',
     //basic auth plugin need on WP install
     username: 'iscrap',
-    password: 'MF!xQPDHNZ%HF51K%z'
 
 });
 
