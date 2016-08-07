@@ -5,10 +5,9 @@ var WP = require( 'wordpress-rest-api' )
   , fs = require('fs')
 
 var wp = new WP({
-    endpoint: 'http://149.202.172.22/wp-json',
-    //basic auth plugin need on WP install
-    username: 'iscrap',
-
+    endpoint: 'url/wp-json',
+    username: 'user',
+    password: 'pass'
 });
 
     /**
