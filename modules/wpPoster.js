@@ -1,4 +1,4 @@
-/** @module Scrapping Module*/
+/** @module Wordpress poster Module*/
 var WP = require( 'wordpress-rest-api' )
   , db     = require('../lib/db.js')
   , handlebars = require('handlebars')
@@ -11,15 +11,20 @@ var wp = new WP({
 });
 
     /**
-     * Post all subtitles that are to publish for a given lang
-     * @param langList (the list of lang that are to publish for)
-     * @param langIndex  
-     */
+ * Post all subtitles that are to publish for a given lang
+ * @method PostSubtitlesToWordpressByLang
+ * @param langList (the list of lang that are to publish for)
+ * @param langIndex  
+ * @param {} callback
+ * @return 
+ */
 function PostSubtitlesToWordpressByLang(langList, langIndex, callback){
     var lang = langList[langIndex]._id;
 
     /**
      * Get next lang in the list
+     * @method nextLang
+     * @return 
      */
     function nextLang() {
         console.log("---------------------------------");
@@ -38,12 +43,15 @@ db.findNewSubtitlesByLang(lang, function(err, subs) {
 
     });
 
-/*
-*Post to wordpress for
-*@param lang (given lang)
-*@param subs (list of subtitles for the lang)
-*@param index (index for the subs list)
-*/
+/**
+ * Post to wordpress for
+ * @method PostOnWordpress
+ * @param lang (given lang)
+ * @param subs (list of subtitles for the lang)
+ * @param index (index for the subs list)
+ * @param {} callback
+ * @return 
+ */
 function PostOnWordpress(lang, subs, index, callback) {
     if (subs.length == 0) {
         console.log("Nothing to post to wordpress for lang " + lang);
@@ -62,9 +70,14 @@ function PostOnWordpress(lang, subs, index, callback) {
 
     });
 
-/*
-* Get get the movie infos
-*/
+/**
+ * Get get the movie infos
+ * @method GetMovie
+ * @param {} lang
+ * @param {} subsForMovie
+ * @param {} callback
+ * @return 
+ */
 function GetMovie(lang, subsForMovie, callback){
     db.findMovieById(movieId, function(err, movie) {
  if (err) {
@@ -84,6 +97,8 @@ getDescriptionByLang(lang, movie, subsForMovie);
 
     /**
      * Get next subtitles in the list
+     * @method next
+     * @return 
      */
     function next() {
         console.log("---------------------------------");
@@ -100,8 +115,11 @@ getDescriptionByLang(lang, movie, subsForMovie);
     }
 
     /**
-    *callback one the wordpress posting is done
-    */
+     * callback one the wordpress posting is done
+     * @method onPostedOnWordpress
+     * @param {} error
+     * @return 
+     */
     function onPostedOnWordpress(error){
         if (error){
             console.log("Could not find movie with id: " + movie._id);
@@ -116,10 +134,13 @@ getDescriptionByLang(lang, movie, subsForMovie);
 
 
 /**
-*Get description for a give lang and movie
-*@param lang
-*@param movie
-*/
+ * Get description for a give lang and movie
+ * @method getDescriptionByLang
+ * @param lang
+ * @param movie
+ * @param {} subsForMovie
+ * @return 
+ */
 function getDescriptionByLang(lang, movie, subsForMovie){
 
 console.log(lang);
@@ -137,12 +158,14 @@ for (var i in movie.descriptions) {
 }
 
 /**
-* Populate and compile handlebar template
-*@param lang
-*@param movie
-*@param subsForMovie
-*@param description
-*/
+ * Populate and compile handlebar template
+ * @method generateTemplate
+ * @param movie
+ * @param subsForMovie
+ * @param lang
+ * @param description
+ * @return 
+ */
 function generateTemplate(movie, subsForMovie, lang, description){
 
     var now = new Date();
@@ -177,12 +200,14 @@ fs.readFile('./templateFR.html', 'utf-8', function(error, source){
 
 };
 
-/*
-*Check post existence and create or upadted post
-*TODO Category
-*@param html (generated template)
-*@param movie
-*/
+/**
+ * Check post existence and create or upadted post
+ * TODO Category
+ * @method checkPostExistence
+ * @param html (generated template)
+ * @param movie
+ * @return 
+ */
 function checkPostExistence(html, movie){
 wp.posts()
     .search( "imdb.com/title/tt" + movie._id ) //should be unique!
@@ -198,6 +223,14 @@ wp.posts()
     });
 }
 
+/**
+ * Description
+ * @method updateExistingPost
+ * @param {} idPost
+ * @param {} html
+ * @param {} movie
+ * @return 
+ */
 function updateExistingPost(idPost, html, movie){
     var postTitle = movie.movieName;
     if (movie.movieKind == "tv"){
@@ -216,6 +249,13 @@ wp.posts().id(idPost).update({
 });
 }
 
+/**
+ * Description
+ * @method createNewPost
+ * @param {} html
+ * @param {} movie
+ * @return 
+ */
 function createNewPost(html, movie){
     var postTitle = movie.movieName;
     if (movie.movieKind == "tv"){
@@ -239,6 +279,12 @@ wp.posts().create({
 
 // --| export
 module.exports = {
+  /**
+   * Description
+   * @method Post
+   * @param {} callback
+   * @return 
+   */
   Post: function(callback) {
     db.findwebsiteToPublishTo(function(err, langList){
         if (err) callback(err);
