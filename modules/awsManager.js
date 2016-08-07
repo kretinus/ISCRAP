@@ -24,8 +24,10 @@ var createParams = {
 
 /**
  * Describe all instance (all state)
+ * @method describeAllInstance
+ * @param {} callback
+ * @return 
  */
-
 function describeAllInstance(callback) {
     ec2.describeInstances().then(function(data) {
         return data.Reservations;
@@ -37,6 +39,13 @@ function describeAllInstance(callback) {
 };
 
 
+/**
+ * Describe with a specif id
+ * @method describeOneInstance
+ * @param {} InstanceId
+ * @param {} callback
+ * @return 
+ */
 function describeOneInstance(InstanceId, callback) {
 
     ec2.describeInstances({
@@ -58,6 +67,13 @@ function describeOneInstance(InstanceId, callback) {
     });
 };
 
+/**
+ * Method called once an instance is created
+ * @method onInstanceCreated
+ * @param {} instance
+ * @param {} callback
+ * @return 
+ */
 function onInstanceCreated(instance, callback) {
     var ip = instance.PublicIpAddress;
     var id = instance.InstanceId;
@@ -108,6 +124,12 @@ function onInstanceCreated(instance, callback) {
     }
 };
 
+/**
+ * Create one instance
+ * @method createOneInstance
+ * @param {} callback
+ * @return 
+ */
 function createOneInstance(callback) {
     ec2.runInstances(createParams).then(function(data) {
         return data.Instances;
@@ -123,6 +145,13 @@ function createOneInstance(callback) {
 
 
 
+/**
+ * TerminateInstance for a given id
+ * @method terminateInstanceById
+ * @param {} InstanceId
+ * @param {} callback
+ * @return 
+ */
 function terminateInstanceById(InstanceId, callback) {
     ec2.terminateInstances({
         InstanceIds: [InstanceId]
@@ -135,6 +164,12 @@ function terminateInstanceById(InstanceId, callback) {
 };
 
 
+/**
+ * Terminate all instances
+ * @method terminateAllInstances
+ * @param {} callback
+ * @return 
+ */
 function terminateAllInstances(callback) {
     var instanceCount = 0;
     var TERMInstanceCount = 0;
@@ -144,7 +179,6 @@ function terminateAllInstances(callback) {
         instanceCount++;
         return reservation.Instances;
     }).map(function(instance) {
-        //console.log('\t'+instance[0].InstanceId+'\t'+instance[0].PublicIpAddress+'\t'+instance[0].State.Name);
         ec2.terminateInstances({
             InstanceIds: [instance[0].InstanceId]
         }).then(function(data) {
