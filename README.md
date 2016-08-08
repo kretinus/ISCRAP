@@ -9,58 +9,48 @@ Out of the box it supports the following features:
 * MovieCollection aggregator
 * IMDb and opensubtitles.org scrapper, gets youtube video id for video trailer
 * Databse seed from opensubtitles.org list
-* Create and Update methode for wordpress post
-* Handlebar template for wordpress post
+* Create and Update methode for Wordpress posts
+* Handlebar template for Wordpress posts
 * Publish subtitles according to a website scope stored in databse
+* Image and zip file storage in databse
+* Wordpress posts retrieve subtitle from database
 * Comprehensive logs
 * Error handeling
 
-NOTE: from log4js 0.5 onwards you'll need to explicitly enable replacement of node's console.log functions. Do this either by calling `log4js.replaceConsole()` or configuring with an object or json file like this:
+## Tech specs
 
-```javascript
-{
-  appenders: [
-    { type: "console" }
-  ],
-  replaceConsole: true
-}
-```
+This projet has been deployed on a ubuntu 16.04 virtual server that should be fully compatible now
+Database : MongoDB 3.2 
+PHP: 7.x
 
 ## installation
 
-npm install log4js
+projectdir$ npm install app.js
 
+## Monkii override
+Small override is need to avoid casting issue if custom id used.
+Replace, line 53 in lib/collection
+```javascript
+function (str) {
+  if (null == str) return this.col.id();
+ return 'string' == typeof str ? this.col.id(str) : str;
+};
+```javascript
+With this
+```javascript
+function (str) { return str; };
+```javascript
 
 ## usage
+Default usage counts the number of main app loop
 
-Minimalist version:
-```javascript
-var log4js = require('log4js');
-var logger = log4js.getLogger();
-logger.debug("Some debug messages");
-```
-By default, log4js outputs to stdout with the coloured layout (thanks to [masylum](http://github.com/masylum)), so for the above you would see:
+
 ```bash
 [2010-01-17 11:43:37.987] [DEBUG] [default] - Some debug messages
 ```
 See example.js for a full example, but here's a snippet (also in fromreadme.js):
 ```javascript
-var log4js = require('log4js'); 
-//console log is loaded by default, so you won't normally need to do this
-//log4js.loadAppender('console');
-log4js.loadAppender('file');
-//log4js.addAppender(log4js.appenders.console());
-log4js.addAppender(log4js.appenders.file('logs/cheese.log'), 'cheese');
 
-var logger = log4js.getLogger('cheese');
-logger.setLevel('ERROR');
-
-logger.trace('Entering cheese testing');
-logger.debug('Got cheese.');
-logger.info('Cheese is Gouda.');
-logger.warn('Cheese is quite smelly.');
-logger.error('Cheese is too ripe!');
-logger.fatal('Cheese was breeding ground for listeria.');
 ```
 Output:
 ```bash
@@ -121,18 +111,4 @@ If you have already defined an absolute path for one of the FileAppenders in the
   ]
 }
 ```    
-Documentation for most of the core appenders can be found on the [wiki](https://github.com/nomiddlename/log4js-node/wiki/Appenders), otherwise take a look at the tests and the examples.
 
-## Documentation
-See the [wiki](https://github.com/nomiddlename/log4js-node/wiki). Improve the [wiki](https://github.com/nomiddlename/log4js-node/wiki), please.
-
-There's also [an example application](https://github.com/nomiddlename/log4js-example).
-
-## Contributing
-Contributions welcome, but take a look at the [rules](https://github.com/nomiddlename/log4js-node/wiki/Contributing) first.
-
-## License
-
-The original log4js was distributed under the Apache 2.0 License, and so is this. I've tried to
-keep the original copyright and author credits in place, except in sections that I have rewritten
-extensively.
