@@ -17,13 +17,17 @@ Out of the box it supports the following features:
 * Comprehensive logs
 * Error handeling
 
+## Demo
+
+Check out the Wordpress demo! more than 10'000 movies posted
+http://149.202.172.22
 ## Tech specs
 
 This projet has been deployed on a ubuntu 16.04 virtual server that should be fully compatible now
 <br>Database : MongoDB 3.2 
 PHP: 7.x
 
-## installation
+## Installation
 
 projectdir$ npm install app.js
 
@@ -40,7 +44,7 @@ With this
 ```javascript
 function (str) { return str; };
 ```
-## credential
+## Credential
 youtube API key (google dev) for youtube trailer matching
 Wordpress user/password
 JSON Basic Authentication needed
@@ -50,12 +54,11 @@ Regular update Wordpress is sufficent but following plugin are required
 <br>WP REST API
 <br>JSON Basic Authentication
 <br>MCE Table Buttons (just for design)
-## usage
+## Usage
 Default usage counts the number of main app loop
 ```javascript
 if (count == 1) finished();
 ```
-
 ## ToDo
 
 templateFr.html -> handle if no image
