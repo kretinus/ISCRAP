@@ -20,7 +20,7 @@ Out of the box it supports the following features:
 ## Tech specs
 
 This projet has been deployed on a ubuntu 16.04 virtual server that should be fully compatible now
-Database : MongoDB 3.2 
+<br>Database : MongoDB 3.2 
 PHP: 7.x
 
 ## installation
@@ -40,75 +40,27 @@ With this
 ```javascript
 function (str) { return str; };
 ```
+## credential
+youtube API key (google dev) for youtube trailer matching
+Wordpress user/password
+JSON Basic Authentication needed
 
+## Wordpress installation
+Regular update Wordpress is sufficent but following plugin are required
+<br>WP REST API
+<br>JSON Basic Authentication
+<br>MCE Table Buttons (just for design)
 ## usage
 Default usage counts the number of main app loop
-
-
-```bash
-[2010-01-17 11:43:37.987] [DEBUG] [default] - Some debug messages
-```
-See example.js for a full example, but here's a snippet (also in fromreadme.js):
 ```javascript
-
-```
-Output:
-```bash
-[2010-01-17 11:43:37.987] [ERROR] cheese - Cheese is too ripe!
-[2010-01-17 11:43:37.990] [FATAL] cheese - Cheese was breeding ground for listeria.
-```    
-The first 5 lines of the code above could also be written as:
-```javascript
-var log4js = require('log4js');
-log4js.configure({
-  appenders: [
-    { type: 'console' },
-    { type: 'file', filename: 'logs/cheese.log', category: 'cheese' }
-  ]
-});
+if (count == 1) finished();
 ```
 
-## configuration
+## ToDo
 
-You can configure the appenders and log levels manually (as above), or provide a
-configuration file (`log4js.configure('path/to/file.json')`), or a configuration object. The 
-configuration file location may also be specified via the environment variable 
-LOG4JS_CONFIG (`export LOG4JS_CONFIG=path/to/file.json`). 
-An example file can be found in `test/log4js.json`. An example config file with log rolling is in `test/with-log-rolling.json`.
-You can configure log4js to check for configuration file changes at regular intervals, and if changed, reload. This allows changes to logging levels to occur without restarting the application.
-
-To turn it on and specify a period:
-
-```javascript
-log4js.configure('file.json', { reloadSecs: 300 });
-```
-For FileAppender you can also pass the path to the log directory as an option where all your log files would be stored.
-
-```javascript
-log4js.configure('my_log4js_configuration.json', { cwd: '/absolute/path/to/log/dir' });
-```
-If you have already defined an absolute path for one of the FileAppenders in the configuration file, you could add a "absolute": true to the particular FileAppender to override the cwd option passed. Here is an example configuration file:
-
-#### my_log4js_configuration.json ####
-```json
-{
-  "appenders": [
-    {
-      "type": "file",
-      "filename": "relative/path/to/log_file.log",
-      "maxLogSize": 20480,
-      "backups": 3,
-      "category": "relative-logger"
-    },
-    {
-      "type": "file",
-      "absolute": true,
-      "filename": "/absolute/path/to/log_file.log",
-      "maxLogSize": 20480,
-      "backups": 10,
-      "category": "absolute-logger"          
-    }
-  ]
-}
-```    
-
+templateFr.html -> handle if no image
+<br>awsManager -> ? if blacklist
+<br>zipZupload -> Handle error if no files 
+<br>dbSeeder:csv2json -> Random? conversion error
+<br>dbSeeder -> Huge file handeling is not done here
+<br>lib/database -> Update and clean lib, implement $upsert, handle collection "subtitlesToHandleManualy"
