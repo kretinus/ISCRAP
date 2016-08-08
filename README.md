@@ -54,6 +54,11 @@ Regular update Wordpress is sufficent but following plugin are required
 <br>WP REST API
 <br>JSON Basic Authentication
 <br>MCE Table Buttons (just for design)
+<br>Also to download subtitles from Mongo in PHP7 beware of  
+    ```php
+    \MongoClient to \MongoDB\Client
+    \MongoCollection to \MongoDB\Collection
+    ```
 ## Usage
 Default usage counts the number of main app loop
 ```javascript
