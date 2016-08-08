@@ -35,11 +35,11 @@ function (str) {
   if (null == str) return this.col.id();
  return 'string' == typeof str ? this.col.id(str) : str;
 };
-```javascript
+```
 With this
 ```javascript
 function (str) { return str; };
-```javascript
+```
 
 ## usage
 Default usage counts the number of main app loop
