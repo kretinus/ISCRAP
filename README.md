@@ -1,4 +1,4 @@
-# Manuel du dévelopeur
+# Quick Guide - iScrap - Subtitle Scraper & More
 
 # iScrap 
 
